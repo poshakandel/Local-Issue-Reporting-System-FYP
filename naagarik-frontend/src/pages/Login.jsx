@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import logo from "../assets/naagarik-logo.png";
 
 export default function Login() {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (e) =>
@@ -14,10 +15,21 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/auth/login", form);
-      alert("Logged in!");
+      const res = await axios.post("/api/auth/login", form);
+
+      const { token, role } = res.data;
+
+      // Save token in localStorage
+      localStorage.setItem("token", token);
+
+      // Redirect user based on role
+      if (role === "Super Admin") navigate("/super-admin");
+      else if (role === "Ward Admin") navigate("/ward-admin");
+      else navigate("/citizen");
+
+      alert(t("Login successful"));
     } catch (error) {
-      alert("Error: " + error.response?.data?.message);
+      alert(error.response?.data?.message || t("Login failed"));
     }
   };
 
@@ -60,7 +72,7 @@ export default function Login() {
           </h1>
 
           <p className="text-sm mb-6 text-slate-700">
-           {t("dontHaveAccount")}{" "}
+            {t("dontHaveAccount")}{" "}
             <Link to="/register" className="text-teal-600 font-semibold">
               {t("Sign Up")}
             </Link>
