@@ -8,28 +8,34 @@ export default function Login() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const res = await axios.post("/api/auth/login", form);
+      const res = await axios.post("http://localhost:4000/api/auth/login", form);
 
       const { token, role } = res.data;
 
-      // Save token in localStorage
+      // Save token and role in localStorage
       localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
 
-      // Redirect user based on role
+      alert(t("Login successful"));
+
+      // Redirect based on role
       if (role === "Super Admin") navigate("/super-admin");
       else if (role === "Ward Admin") navigate("/ward-admin");
       else navigate("/citizen");
 
-      alert(t("Login successful"));
     } catch (error) {
       alert(error.response?.data?.message || t("Login failed"));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,14 +43,11 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-teal-50 via-white to-blue-100">
+      {/* Header */}
       <header className="w-full bg-white/80 backdrop-blur-lg shadow-md border-b border-teal-200 fixed top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-3">
-            <img
-              src={logo}
-              alt="Naagarik Logo"
-              className="h-9 w-auto object-contain"
-            />
+            <img src={logo} alt="Naagarik Logo" className="h-9 w-auto object-contain" />
           </Link>
 
           <select
@@ -58,7 +61,9 @@ export default function Login() {
         </div>
       </header>
 
+      {/* Main Section */}
       <main className="flex flex-1 pt-28">
+        {/* Left: Login Form */}
         <div className="w-1/2 flex flex-col justify-center px-16">
           <Link
             to="/"
@@ -67,9 +72,7 @@ export default function Login() {
             ← {t("Back")}
           </Link>
 
-          <h1 className="text-4xl font-bold mb-2 text-teal-900">
-            {t("Welcome back")}
-          </h1>
+          <h1 className="text-4xl font-bold mb-2 text-teal-900">{t("Welcome back")}</h1>
 
           <p className="text-sm mb-6 text-slate-700">
             {t("dontHaveAccount")}{" "}
@@ -85,6 +88,7 @@ export default function Login() {
               placeholder={t("Email")}
               className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-teal-400"
               onChange={handleChange}
+              required
             />
 
             <input
@@ -93,14 +97,20 @@ export default function Login() {
               placeholder={t("Password")}
               className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-teal-400"
               onChange={handleChange}
+              required
             />
 
-            <button className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white p-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition">
-              {t("Login")} →
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white p-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition disabled:opacity-70"
+            >
+              {loading ? t("Logging in...") : t("Login")} →
             </button>
           </form>
         </div>
 
+        {/* Right: Info Panel */}
         <div className="w-1/2 bg-gradient-to-br from-teal-400 to-blue-600 flex flex-col justify-center items-center text-white p-10">
           <div className="bg-white/20 p-6 rounded-2xl">
             <svg width="50" height="50" fill="white">
@@ -108,14 +118,10 @@ export default function Login() {
             </svg>
           </div>
 
-          <h1 className="text-4xl font-bold mt-6">
-            {t("Report. Track. Resolve.")}
-          </h1>
+          <h1 className="text-4xl font-bold mt-6">{t("Report. Track. Resolve.")}</h1>
 
           <p className="text-lg mt-3 max-w-md text-center">
-            {t(
-              "Join the community-driven platform that makes local governance transparent and responsive."
-            )}
+            {t("Join the community-driven platform that makes local governance transparent and responsive.")}
           </p>
         </div>
       </main>

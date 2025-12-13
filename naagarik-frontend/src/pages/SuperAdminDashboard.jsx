@@ -7,15 +7,16 @@ export default function SuperAdminDashboard() {
   const { t, i18n } = useTranslation();
   const [wardAdmins, setWardAdmins] = useState([]);
   const [form, setForm] = useState({ name: "", email: "", phone: "", password: "", ward: "" });
+  const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("token");
 
   const fetchWardAdmins = async () => {
     try {
-      const res = await axios.get("/api/dashboard/ward-admins", {
+      const res = await axios.get("http://localhost:4000/api/dashboard/ward-admins", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setWardAdmins(res.data);
+      setWardAdmins(res.data || []);
     } catch (error) {
       alert(error.response?.data?.message || "Error fetching ward admins");
     }
@@ -29,8 +30,9 @@ export default function SuperAdminDashboard() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      await axios.post("/api/dashboard/super-admin/create-ward-admin", form, {
+      await axios.post("http://localhost:4000/api/dashboard/super-admin/create-ward-admin", form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Ward Admin created!");
@@ -38,6 +40,8 @@ export default function SuperAdminDashboard() {
       fetchWardAdmins();
     } catch (error) {
       alert(error.response?.data?.message || "Error creating ward admin");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,6 +49,7 @@ export default function SuperAdminDashboard() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-teal-50 via-white to-blue-100">
+      {/* Header */}
       <header className="w-full bg-white/80 backdrop-blur-lg shadow-md border-b border-teal-200 fixed top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
           <img src={logo} alt="Naagarik Logo" className="h-9 w-auto object-contain" />
@@ -66,53 +71,20 @@ export default function SuperAdminDashboard() {
         <div className="mb-10 p-6 bg-white rounded-lg shadow-md max-w-lg">
           <h2 className="text-2xl font-semibold mb-4">{t("Add Ward Admin")}</h2>
           <form className="space-y-3" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="name"
-              placeholder={t("Full Name")}
-              className="w-full p-2 border rounded-lg"
-              value={form.name}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder={t("Email")}
-              className="w-full p-2 border rounded-lg"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="text"
-              name="phone"
-              placeholder={t("Phone Number")}
-              className="w-full p-2 border rounded-lg"
-              value={form.phone}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder={t("Password")}
-              className="w-full p-2 border rounded-lg"
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="text"
-              name="ward"
-              placeholder={t("Ward")}
-              className="w-full p-2 border rounded-lg"
-              value={form.ward}
-              onChange={handleChange}
-              required
-            />
+            {["name","email","phone","password","ward"].map((field) => (
+              <input
+                key={field}
+                type={field === "password" ? "password" : "text"}
+                name={field}
+                placeholder={t(field === "name" ? "Full Name" : field.charAt(0).toUpperCase() + field.slice(1))}
+                className="w-full p-2 border rounded-lg"
+                value={form[field]}
+                onChange={handleChange}
+                required
+              />
+            ))}
             <button className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white p-2 rounded-lg font-semibold">
-              {t("Create")}
+              {loading ? t("Creating...") : t("Create")}
             </button>
           </form>
         </div>
@@ -130,8 +102,8 @@ export default function SuperAdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {wardAdmins.map((admin) => (
-                <tr key={admin.id} className="border-b">
+              {(Array.isArray(wardAdmins) ? wardAdmins : []).map((admin) => (
+                <tr key={admin._id} className="border-b">
                   <td className="p-2">{admin.name}</td>
                   <td className="p-2">{admin.email}</td>
                   <td className="p-2">{admin.phone}</td>

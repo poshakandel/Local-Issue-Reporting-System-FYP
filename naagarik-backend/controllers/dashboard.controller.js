@@ -54,3 +54,13 @@ export const createWardAdmin = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Get all Ward Admins (for Super Admin dashboard)
+export const getWardAdmins = async (req, res) => {
+  try {
+    const wardAdmins = await User.find({ role: "Ward Admin" }).select("-password");
+    res.json(wardAdmins);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
