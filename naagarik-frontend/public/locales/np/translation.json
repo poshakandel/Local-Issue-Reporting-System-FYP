@@ -1,8 +1,30 @@
-
 {
-  "description": "स्थानीय समस्या रिपोर्ट गर्नुहोस्, प्रगति ट्र्याक गर्नुहोस्, र राम्रो समुदाय निर्माणमा सहयोग गर्नुहोस्।",
-  "login": "लगइन",
-  "register": "दर्ता",
   "Nagarik": "नागरिक",
-  "language": "भाषा"
+  "description": "स्थानीय समस्याहरू रिपोर्ट गर्नुहोस्, प्रगति ट्र्याक गर्नुहोस्, र सँगै राम्रो समुदाय बनाऔं।",
+
+  "login": "लगइन",
+  "register": "दर्ता गर्नुहोस्",
+  "Login": "लगइन",
+  "Sign Up": "साइन अप",
+
+  "Back": "पछाडि",
+  "Welcome back": "फेरि स्वागत छ",
+  "Create Account": "खाता बनाउनुहोस्",
+  "Already have an account?": "पहिले नै खाता छ?",
+  "dontHaveAccount": "खाता छैन?",
+  "Join the community!": "समुदायमा सामेल हुनुहोस्!",
+
+  "Email": "इमेल",
+  "Password": "पासवर्ड",
+  "Confirm Password": "पासवर्ड पुष्टि गर्नुहोस्",
+  "Full Name": "पूरा नाम",
+  "Phone Number": "फोन नम्बर",
+
+  "Report. Track. Resolve.": "रिपोर्ट गर्नुहोस्। ट्र्याक गर्नुहोस्। समाधान गर्नुहोस्।",
+  "Join the community-driven platform that makes local governance transparent and responsive.": "स्थानीय शासनलाई पारदर्शी र उत्तरदायी बनाउने समुदाय-आधारित प्लेटफर्ममा सामेल हुनुहोस्।",
+
+  "Be a part of a transparent and responsive local governance experience.": "पारदर्शी र उत्तरदायी स्थानीय शासन अनुभवको हिस्सा बन्नुहोस्।",
+
+  "Passwords do not match!": "पासवर्ड मिलेन!",
+  "Account created successfully!": "खाता सफलतापूर्वक बनाइयो!"
 }

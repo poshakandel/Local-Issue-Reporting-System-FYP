@@ -1,7 +1,30 @@
 {
+  "Nagarik": "Naagarik",
   "description": "Report local issues, track progress, and help build a better community together.",
+
   "login": "Login",
   "register": "Register",
-  "Nagarik": "Naagarik",
-  "language": "Language"
+  "Login": "Login",
+  "Sign Up": "Sign Up",
+
+  "Back": "Back",
+  "Welcome back": "Welcome back",
+  "Create Account": "Create Account",
+  "Already have an account?": "Already have an account?",
+  "dontHaveAccount": "Don’t have an account?",
+  "Join the community!": "Join the community!",
+
+  "Email": "Email",
+  "Password": "Password",
+  "Confirm Password": "Confirm Password",
+  "Full Name": "Full Name",
+  "Phone Number": "Phone Number",
+
+  "Report. Track. Resolve.": "Report. Track. Resolve.",
+  "Join the community-driven platform that makes local governance transparent and responsive.": "Join the community-driven platform that makes local governance transparent and responsive.",
+
+  "Be a part of a transparent and responsive local governance experience.": "Be a part of a transparent and responsive local governance experience.",
+
+  "Passwords do not match!": "Passwords do not match!",
+  "Account created successfully!": "Account created successfully!"
 }

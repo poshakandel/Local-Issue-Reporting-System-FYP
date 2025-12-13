@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import logo from "../assets/naagarik-logo.png";
 
 export default function Signup() {
   const { t, i18n } = useTranslation();
@@ -33,114 +34,121 @@ export default function Signup() {
     }
   };
 
-  const changeLanguage = (lang) => {
-    i18n.changeLanguage(lang);
-  };
+  const changeLanguage = (lang) => i18n.changeLanguage(lang);
 
   return (
-    <div className="min-h-screen flex">
-
-      {/* LEFT SECTION */}
-      <div className="w-1/2 flex flex-col justify-center p-16">
-
-        {/* BACK BUTTON */}
-       <Link
-  to="/"
-  className="w-fit mb-8 px-2 py-1 text-xs border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 transition"
->
-  ← {t("Back")}
-</Link>
-
-
-        {/* LANGUAGE SWITCHER */}
-        <div className="flex gap-3 absolute top-6 right-6">
-          <button
-            onClick={() => changeLanguage("en")}
-            className="px-3 py-1 border rounded hover:bg-gray-100"
-          >
-            EN
-          </button>
-          <button
-            onClick={() => changeLanguage("np")}
-            className="px-3 py-1 border rounded hover:bg-gray-100"
-          >
-            NP
-          </button>
-        </div>
-
-        <h1 className="text-4xl font-bold mb-2">{t("Create Account")}</h1>
-        <p className="text-sm mb-6">
-          {t("Already have an account?")}{" "}
-          <Link to="/login" className="text-blue-500 font-semibold">
-            {t("Login")}
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-teal-50 via-white to-blue-100">
+      <header className="w-full bg-white/80 backdrop-blur-lg shadow-md border-b border-teal-200 fixed top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
+          <Link to="/" className="flex items-center gap-3">
+            <img
+              src={logo}
+              alt="Naagarik Logo"
+              className="h-9 w-auto object-contain"
+            />
           </Link>
-        </p>
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder={t("Full Name")}
-            className="w-full p-3 border rounded-lg"
-            onChange={handleChange}
-            required
-          />
+          <select
+            onChange={(e) => changeLanguage(e.target.value)}
+            value={i18n.language}
+            className="px-5 py-2 rounded-full bg-white border border-teal-300 text-teal-700 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+          >
+            <option value="en">English</option>
+            <option value="np">नेपाली</option>
+          </select>
+        </div>
+      </header>
 
-          <input
-            type="email"
-            name="email"
-            placeholder={t("Email")}
-            className="w-full p-3 border rounded-lg"
-            onChange={handleChange}
-            required
-          />
+      <main className="flex flex-1 pt-28">
+        <div className="w-1/2 flex flex-col justify-center px-16">
+          <Link
+            to="/"
+            className="w-fit mb-8 px-2 py-1 text-xs border border-teal-300 text-teal-700 rounded-md hover:bg-teal-50 transition"
+          >
+            ← {t("Back")}
+          </Link>
 
-          <input
-            type="text"
-            name="phone"
-            placeholder={t("Phone Number")}
-            className="w-full p-3 border rounded-lg"
-            onChange={handleChange}
-            required
-          />
+          <h1 className="text-4xl font-bold mb-2 text-teal-900">
+            {t("Create Account")}
+          </h1>
 
-          <input
-            type="password"
-            name="password"
-            placeholder={t("Password")}
-            className="w-full p-3 border rounded-lg"
-            onChange={handleChange}
-            required
-          />
+          <p className="text-sm mb-6 text-slate-700">
+            {t("Already have an account?")}{" "}
+            <Link to="/login" className="text-teal-600 font-semibold">
+              {t("Login")}
+            </Link>
+          </p>
 
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder={t("Confirm Password")}
-            className="w-full p-3 border rounded-lg"
-            onChange={handleChange}
-            required
-          />
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="name"
+              placeholder={t("Full Name")}
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-teal-400"
+              onChange={handleChange}
+              required
+            />
 
-          <button className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white p-3 rounded-lg font-semibold">
-            {t("Sign Up")} →
-          </button>
-        </form>
-      </div>
+            <input
+              type="email"
+              name="email"
+              placeholder={t("Email")}
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-teal-400"
+              onChange={handleChange}
+              required
+            />
 
-      {/* RIGHT SECTION */}
-      <div className="w-1/2 bg-gradient-to-br from-teal-400 to-blue-600 flex flex-col justify-center items-center text-white p-10">
-        <div className="bg-white/20 p-6 rounded-2xl">
-          <svg width="50" height="50" fill="white">
-            <circle cx="25" cy="25" r="25" opacity="0.3" />
-          </svg>
+            <input
+              type="text"
+              name="phone"
+              placeholder={t("Phone Number")}
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-teal-400"
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              type="password"
+              name="password"
+              placeholder={t("Password")}
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-teal-400"
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder={t("Confirm Password")}
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-teal-400"
+              onChange={handleChange}
+              required
+            />
+
+            <button className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white p-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition">
+              {t("Sign Up")} →
+            </button>
+          </form>
         </div>
 
-        <h1 className="text-4xl font-bold mt-6">{t("Join the community!")}</h1>
-        <p className="text-lg mt-3 max-w-md text-center">
-          {t("Be a part of a transparent and responsive local governance experience.")}
-        </p>
-      </div>
+        <div className="w-1/2 bg-gradient-to-br from-teal-400 to-blue-600 flex flex-col justify-center items-center text-white p-10">
+          <div className="bg-white/20 p-6 rounded-2xl">
+            <svg width="50" height="50" fill="white">
+              <circle cx="25" cy="25" r="25" opacity="0.3" />
+            </svg>
+          </div>
+
+          <h1 className="text-4xl font-bold mt-6">
+            {t("Join the community!")}
+          </h1>
+
+          <p className="text-lg mt-3 max-w-md text-center">
+            {t(
+              "Be a part of a transparent and responsive local governance experience."
+            )}
+          </p>
+        </div>
+      </main>
     </div>
   );
 }
