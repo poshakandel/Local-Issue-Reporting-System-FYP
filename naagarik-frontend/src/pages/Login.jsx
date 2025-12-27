@@ -14,30 +14,46 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await axios.post("http://localhost:4000/api/auth/login", form);
+  e.preventDefault();
+  setLoading(true);
 
-      const { token, role } = res.data;
+  try {
+    const res = await axios.post(
+      "http://localhost:4000/api/auth/login",
+      form
+    );
 
-      // Save token and role in localStorage
-      localStorage.setItem("token", token);
-      localStorage.setItem("role", role);
+    
+    const token = res.data.token;
+    const role = res.data.role;
 
-      alert(t("Login successful"));
 
-      // Redirect based on role
-      if (role === "Super Admin") navigate("/super-admin");
-      else if (role === "Ward Admin") navigate("/ward-admin");
-      else navigate("/citizen");
+    console.log("ROLE FROM BACKEND:", role);
 
-    } catch (error) {
-      alert(error.response?.data?.message || t("Login failed"));
-    } finally {
-      setLoading(false);
+    // Save to localStorage
+    localStorage.setItem("token", token);
+    localStorage.setItem("role", role);
+
+    alert(t("Login successful"));
+
+    //  role-based redirect
+    if (role === "SuperAdmin") {
+      navigate("/super-admin");
+    } else if (role === "WardAdmin") {
+      navigate("/ward-admin");
+    } else if (role === "Citizen") {
+      navigate("/citizen");
+    } else {
+      console.error("Unknown role:", role);
     }
-  };
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("Login failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const changeLanguage = (lang) => i18n.changeLanguage(lang);
 

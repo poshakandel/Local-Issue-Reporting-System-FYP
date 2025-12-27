@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import logo from "../assets/naagarik-logo.png";
 
 export default function Signup() {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
+    ward: "", // Added ward field
     password: "",
     confirmPassword: "",
   });
@@ -27,10 +29,18 @@ export default function Signup() {
     }
 
     try {
-      await axios.post("/api/auth/signup", form);
-      alert(t("Account created successfully!"));
+      const res = await axios.post(
+        "http://localhost:4000/api/auth/register",
+        form
+      );
+
+      alert(t(res.data.message || "Account created successfully!"));
+      navigate("/login"); // Redirect to login page
     } catch (error) {
-      alert("Error: " + error.response?.data?.message);
+      console.error("Signup error:", error);
+      alert(
+        error.response?.data?.message || error.message || "Network error"
+      );
     }
   };
 
@@ -38,6 +48,7 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-teal-50 via-white to-blue-100">
+      {/* ================= NAVBAR ================= */}
       <header className="w-full bg-white/80 backdrop-blur-lg shadow-md border-b border-teal-200 fixed top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-3">
@@ -59,7 +70,9 @@ export default function Signup() {
         </div>
       </header>
 
+      {/* ================= MAIN ================= */}
       <main className="flex flex-1 pt-28">
+        {/* Left Side - Form */}
         <div className="w-1/2 flex flex-col justify-center px-16">
           <Link
             to="/"
@@ -107,6 +120,16 @@ export default function Signup() {
               required
             />
 
+            {/* New Ward Input */}
+            <input
+              type="text"
+              name="ward"
+              placeholder={t("Ward")}
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-teal-400"
+              onChange={handleChange}
+              required
+            />
+
             <input
               type="password"
               name="password"
@@ -131,6 +154,7 @@ export default function Signup() {
           </form>
         </div>
 
+        {/* Right Side - Info / Design */}
         <div className="w-1/2 bg-gradient-to-br from-teal-400 to-blue-600 flex flex-col justify-center items-center text-white p-10">
           <div className="bg-white/20 p-6 rounded-2xl">
             <svg width="50" height="50" fill="white">
